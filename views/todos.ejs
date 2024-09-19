@@ -8,15 +8,21 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Todos</h1>
-    <ul>
-    <% todos.forEach( el => { %>
-            <li class='todoItem' data-id='<%=el._id%>'>
-                <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.todo %></span>
-                <span class='del'> Delete </span>
-            </li>
-    <% }) %>    
-    </ul>
+    <h1 class="text-3xl">Todos</h1>
+    <div class="px-6 py-4">
+        <div class="font-bold text-xl mb-2 border">Thing to do</div>
+            <ul class="border">
+            <% todos.forEach( el => { %>
+                    <div class="max-w-sm h-24 rounded overflow-hidden shadow-lg border flex items-center">
+                    <li class='todoItem align-middle' data-id='<%=el._id%>'>
+                        <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.todo %></span>
+                        <span class='del'> Delete </span>
+                    </li>
+                    </div>
+            <% }) %>    
+            </ul>
+    </div>
+</div>
 
     <h2><%= user.userName %> has <%= left %> things left to do.</h2>
 
