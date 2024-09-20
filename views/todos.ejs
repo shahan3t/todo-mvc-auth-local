@@ -26,12 +26,12 @@
 
     <h2><%= user.userName %> has <%= left %> things left to do.</h2>
 
-    <form action="/todos/createTodo" method='POST'>
-        <input type="text" placeholder="Enter Todo Item" name='todoItem'>
-        <input type="submit">
+    <form action="/todos/createTodo" method='POST' class="border">
+        <input type="text" placeholder="Enter Todo Item" name='todoItem' class="border">
+        <input type="submit" class="border">
     </form>
 
-    <a href="/logout">Logout</a>
+    <a href="/logout" class="border">Logout</a>
 
     <script src="js/main.js"></script>
 </body>
