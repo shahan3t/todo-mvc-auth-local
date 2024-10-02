@@ -1,7 +1,8 @@
 const LocalStrategy = require('passport-local').Strategy
-const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy
 const mongoose = require('mongoose')
 const User = require('../models/User')
+
 
 module.exports = function (passport) {
   // passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
@@ -22,24 +23,47 @@ module.exports = function (passport) {
   //     })
   //   })
   // }))
-  passport.use('provider', new OAuth2Strategy({
-    authorizationURL: 'https://www.google.com/oauth2/authorize',
-    tokenURL: 'https://www.google.com/oauth2/token',
-    clientID: '123-456-789',
-    clientSecret: 'shhh-its-a-secret',
-    callbackURL: 'https://www.example.com/auth/provider/callback'
-  },
-  function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate( function(err, user) {
-      done(err, user);
-    });
-  }
-));
-  passport.serializeUser((user, done) => {
-    done(null, user.id)
-  })
+  passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: '/auth/google/callback' 
+},
+async (accessToken, refreshToken, profile, cb) => {
+    const newUser = {
+        googleID: profile.id,
+        displayName: profile.displayName,
+        firstName: profile.name.givenName,
+        lastName: profile.name.familyName,
+        image: profile.photos[0].value
+    }
 
-  passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => done(err, user))
-  })
+    try{
+        let user = await User.findOne({ googleID: profile.id})
+
+        if(user) {
+            cb(null, user)
+        }else {
+            user = await User.create(newUser)
+            cb(null, user)
+        }
+    }catch (error) {
+        console.error(error)
+    }
+}));
+
+passport.serializeUser(function(user, cb) {
+    process.nextTick(function() {
+      return cb(null, {
+        id: user.id,
+        username: user.username,
+        picture: user.picture
+      });
+    });
+  });
+  
+  passport.deserializeUser(function(user, cb) {
+    process.nextTick(function() {
+      return cb(null, user);
+    });
+  });
 }
