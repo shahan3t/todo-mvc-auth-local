@@ -8,12 +8,13 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="mx-8">
     <h1 class="text-3xl">Todos</h1>
     <div class="px-6 py-4">
-        <div class="font-bold text-xl mb-2 border">Thing to do</div>
-            <ul class="border">
+        <div class="font-bold text-xl mb-2">Thing to do</div>
+            <ul>
             <% todos.forEach( el => { %>
-                    <div class="max-w-sm h-24 rounded overflow-hidden shadow-lg border flex items-center">
+                    <div class="max-w-sm h-24 rounded overflow-hidden shadow-lg flex items-center">
                     <li class='todoItem align-middle' data-id='<%=el._id%>'>
                         <span class='<%= el.completed === true ? 'completed' : 'not'%>'><%= el.todo %></span>
                         <span class='del'> Delete </span>
@@ -22,16 +23,15 @@
             <% }) %>    
             </ul>
     </div>
-</div>
-
     <h2><%= user.userName %> has <%= left %> things left to do.</h2>
 
-    <form action="/todos/createTodo" method='POST' class="border">
-        <input type="text" placeholder="Enter Todo Item" name='todoItem' class="border">
-        <input type="submit" class="border">
+    <form action="/todos/createTodo" method='POST' class="">
+        <input type="text" placeholder="Enter Todo Item" name='todoItem' class="">
+        <input type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
     </form>
 
-    <a href="/logout" class="border">Logout</a>
+    <a href="/logout" class="">Logout</a>
+</div>
 
     <script src="js/main.js"></script>
 </body>
