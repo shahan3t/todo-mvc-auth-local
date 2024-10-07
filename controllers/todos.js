@@ -1,4 +1,5 @@
-const Todo = require('../models/Todo')
+const Todo = require('../models/Todo');
+const fetch = require('node-fetch');
 
 module.exports = {
     getTodos: async (req,res)=>{
@@ -6,7 +7,11 @@ module.exports = {
         try{
             const todoItems = await Todo.find({userId:req.user.id})
             const itemsLeft = await Todo.countDocuments({userId:req.user.id,completed: false})
-            res.render('todos.ejs', {todos: todoItems, left: itemsLeft, user: req.user})
+            const response = await fetch('https://zenquotes.io/api/quotes/')
+            const quoteRes = await response.json()
+            const quote = quoteRes[0]["q"]
+            console.log(quote)
+            res.render('todos.ejs', {todos: todoItems, left: itemsLeft, quote: quote, user: req.user})
         }catch(err){
             console.log(err)
         }
@@ -52,4 +57,19 @@ module.exports = {
             console.log(err)
         }
     }
-}    
+}
+
+// const fetch = require('node-fetch');
+
+// (async () => {
+//   try {
+
+//     const response = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY')
+//     const json = await response.json()
+
+//     console.log(json.url);
+//     console.log(json.explanation);
+//   } catch (error) {
+//     console.log(error.response.body);
+//   }
+// })();

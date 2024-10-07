@@ -10,6 +10,7 @@ const connectDB = require('./config/database')
 const mainRoutes = require('./routes/main')
 const todoRoutes = require('./routes/todos')
 const authRoutes = require('./routes/auth')
+const fetch = require('node-fetch')
 
 require('dotenv').config({path: './config/.env'})
 
